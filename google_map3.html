@@ -7,7 +7,6 @@
   html { height: 100% }
   body { height: 100%; margin: 0px; padding: 0px }
   #map_canvas  { width:50%; height:50%; }
-  #map_canvas2 { width:50%; height:50%; }
 </style>
 </head>
 
@@ -15,8 +14,6 @@
 
 <hr />
 <div id="map_canvas"></div>
-<hr />
-<div id="map_canvas2"></div>
 <hr />
 
 
@@ -45,12 +42,10 @@ function initialize(div_tag, myLatitude, myLongitude) {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(div_tag, myOptions);
-
 }
 
 
-jQuery.event.add(window, 'load', initialize($("#map_canvas").get(0), -34.397, 150.644));
-jQuery.event.add(window, 'load', initialize($("#map_canvas2").get(0), 35.397, 151.644));
+jQuery.event.add(window, 'load', initialize($("#map_canvas").get(0), 35.60, 139.644));
 </script>
 
 </body>
