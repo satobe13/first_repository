@@ -6,7 +6,8 @@
 <style type="text/css">
   html { height: 100% }
   body { height: 100%; margin: 0px; padding: 0px }
-  #map_canvas { width:50%; height:50%; }
+  #map_canvas  { width:50%; height:50%; }
+  #map_canvas2 { width:50%; height:50%; }
 </style>
 </head>
 
@@ -15,7 +16,8 @@
 <hr />
 <div id="map_canvas"></div>
 <hr />
-
+<div id="map_canvas2"></div>
+<hr />
 
 
 
@@ -32,19 +34,23 @@
 </script>
 
 <script type="text/javascript">
-function initialize() {
-    var latlng = new google.maps.LatLng(-34.397, 150.644);
+function initialize(div_tag, myLatitude, myLongitude) {
+	var Latitude  = parseFloat(myLatitude);
+	var Longitude = parseFloat(myLongitude);
+
+    var latlng = new google.maps.LatLng(Latitude, Longitude);
     var myOptions = {
       zoom: 8,
       center: latlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    var map = new google.maps.Map($("#map_canvas").get(0), myOptions);
+    var map = new google.maps.Map(div_tag, myOptions);
 
 }
 
 
-jQuery.event.add(window, 'load', initialize);
+jQuery.event.add(window, 'load', initialize($("#map_canvas").get(0), -34.397, 150.644));
+jQuery.event.add(window, 'load', initialize($("#map_canvas2").get(0), 35.397, 151.644));
 </script>
 
 </body>
