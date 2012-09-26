@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+<!--googleMapAPI-->
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<!--jQuery-->
+<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+<!--gmap3-->
+<script type="text/javascript" src="/js/jquery.gmap3.js"></script>
+
+</head>
+
+
+<body>
+<style type="text/css">
+		html { height: 100% }
+		body { height: 100%; margin: 0px; padding: 0px }
+div#gMap {
+	margin-bottom: 40px;
+	height: 300px;
+	width : 300px;
+	background-color: black;
+	border: 1px solid yellow;
+}
+</style>
+
+
+<section id="map">
+	<hr />
+<!--	<div id="gMap"></div>-->
+	<hr />
+	<a id="get_geolocation">位置情報を取る。</a>
+	<hr />
+	<span id="latitude"></span>
+	<span id="longitude"></span>
+	<hr />
+	<form id="place_form">
+		<input id="place_name" type="text" />
+		<input id="place_search" type="button" value="地名・駅名検索" />
+	</form>
+
+</section>
+
+
+<script type="text/javascript">
+/* 変数設定 */
+
+var lastCenterLatlng = undefined; /* 最後に設定したセンター座標 */
+
+var base_lat = undefined;
+var base_lon = undefined;
+var base_zoom = 10;
+
+$(function() {
+
+	base_lat = 38.3190954;
+	base_lon = 140.8811375;
+
+	/* 地図表示 */
+	set_gmap();
+
+
+	$("#get_geolocation").click(function(){
+		navigator.geolocation.watchPosition(
+			function(position){
+				/* ポジション設定 */
+				set_position(position.coords.latitude, position.coords.longitude);
+				/* 地図表示 */
+				set_gmap();
+			}
+		);
+	});
+
+
+	$("#place_search").click(function(){
+//		alert($("#place_name").val());
+		var lat_lng = getLatLng($("#place_name").val());
+		alart(lat_lng);
+	});
+
+});
+
+
+
+
+
+function set_position(latitude, longitude){
+	$("#latitude").html(latitude);
+	$("#longitude").html(longitude);
+	base_lat = latitude;
+	base_lon = longitude;
+}
+
+function set_gmap (){
+	$("#gMap").gmap3({
+		latitude:  base_lat,
+		longitude: base_lon,
+		zoom:      base_zoom,
+		navigationControl: true,
+		mapTypeControl:    true,
+		scaleControl:      true,
+		markers: [
+			{
+					latitude: 35.5855341,
+					longitude: 139.6526983,
+					title: '川崎フロンターレ',
+					content: '<div class="infoWindowWrapper"><h4>川崎フロンターレ</h4><p>等々力陸上競技場</p></div>'
+			},
+		]
+
+	});
+}
+
+<!-- http://www.nanchatte.com/map/getLatLngByAddress.html -->
+function getLatLng(place_name){
+	var geocoder = new google.maps.Geocoder();
+	geocoder.geocode( {'address': place_name}, function(results, status) {
+		if( status === google.maps.GeocoderStatus.OK) {
+			//alert( results[0].geometry.location );
+			for ( var i = 0; i < results.length; ++i ) {
+//				alert(results[i].geometry.location);
+//				alert(results[i].geometry.location.lat());
+//				alert(results[i].geometry.location.lat());
+				var lat_lng = results[i].geometry.location.lat() + ',' + results[i].geometry.location.lat();
+				alert (lat_lng);
+				return lat_lng;
+
+			}
+
+		} else {
+			alert("『" + place_name + "』は見つかりませんでした。");
+		}
+	});
+	return;
+}
+
+</script>
+
+</body>
+</html>
