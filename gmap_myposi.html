@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+	<!--googleMapAPI-->
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+	<!--jQuery-->
+	<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+	<!--gmap3-->
+	<script type="text/javascript" src="/js/jquery.gmap3.js"></script>
+
+</head>
+
+
+<body>
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0px; padding: 0px }
+div#gMap {
+	margin-bottom: 40px;
+	height: 300px;
+	width : 300px;
+	background-color: black;
+	border: 1px solid yellow;
+}
+</style>
+
+
+<section id="map">
+	<hr />
+	現在地
+	<hr />
+	<span id="latitude"></span>
+	<span id="longitude"></span>
+	<hr />
+	<div id="gMap"></div>
+	<hr />
+</section>
+
+
+<script type="text/javascript">
+/* 変数設定 */
+
+//var base_lat = 38.3190954;
+//var base_lon = 140.8811375;
+
+var base_lat;
+var base_lon;
+var base_zoom = 14;
+
+/* onLoad */
+$(function() {
+
+	/* 現在地を取得 */
+	navigator.geolocation.getCurrentPosition(
+		function(position){
+			set_position(position.coords.latitude, position.coords.longitude); // ポジションをグローバル変数に格納
+			set_gmap();// 地図を表示
+		},
+		function(){
+			alert("failed current position");
+		}
+	);
+
+	/* 監視して位置変更時に取得 */
+	/*
+	navigator.geolocation.watchPosition(
+		function(position){
+			set_position(position.coords.latitude, position.coords.longitude); // ポジションをグローバル変数に格納
+			set_gmap(); // 地図を表示
+		},
+		function(){
+			alert("failed watch position");
+		}
+	);
+	*/
+	return;
+});
+
+
+
+/* 地図表示 */
+function set_gmap (){
+	$("#gMap").gmap3({
+		latitude:  base_lat,
+		longitude: base_lon,
+		zoom:      base_zoom,
+		navigationControl: true,
+		mapTypeControl:    true,
+		scaleControl:      true,
+	});
+
+	$.gmap3.addMarker($("#gMap"), {  
+		latitude:  base_lat,
+		longitude: base_lon,
+		title: '現在地',
+		icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=・|7FFF00|000000'
+		}
+	);
+
+
+	$.gmap3.addMarker($("#gMap"), {  
+					latitude: 35.5855341,
+					longitude: 139.6526983,
+					title: '川崎フロンターレ',
+					content: '<div class="infoWindowWrapper"><h4>川崎フロンターレ</h4><p>等々力陸上競技場</p></div>'
+		}
+	);
+	
+	$.gmap3.addMarker($("#gMap"), {  
+		address: '栃木',
+		title: '栃木',
+		content: '<div class="infoWindowWrapper"><h4>栃木</h4><p>栃木県庁</p></div>'	
+		}
+	);
+
+
+}
+
+function set_position(latitude, longitude){
+	// グローバル変数の座標に設定
+	base_lat = latitude;
+	base_lon = longitude;
+
+	// HTMLに座標表示
+	$("#latitude").html(base_lat);
+	$("#longitude").html(base_lon);
+
+	return;
+}
+</script>
+
+</body>
+</html>
